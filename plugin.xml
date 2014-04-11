@@ -75,4 +75,14 @@
         <source-file src="src/android/pushservice-2.4.0.jar" target-dir="libs" />
     </platform>  
 
+     <!-- ios -->
+     <platform name="ios">
+         <header-file src="src/ios/lib" />
+ 	     <framework src="Foundation.framework" />
+ 	     <framework src="CoreTelephony.framework" />
+ 	     <framework src="SystemConfiguration.framework" />
+         <framework src="libz.dylib" />
+     </platform>
+
+
 </plugin>
