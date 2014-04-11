@@ -77,7 +77,7 @@
 
      <!-- ios -->
      <platform name="ios">
-         <header-file src="src/ios/BPush.h" />
+         <header-file src="src/ios/lib/BPush.h" />
  	     <framework src="Foundation.framework" />
  	     <framework src="CoreTelephony.framework" />
  	     <framework src="SystemConfiguration.framework" />
