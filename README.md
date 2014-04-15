@@ -34,8 +34,27 @@ AndroidManifest.xml:
 
  IOS：
 
+1. 将 libBPush.a 和 BPush.h 添加到 Xcode 工程目录
+2. 工程必须引用的库:
+Foundation.framework CoreTelephony.framework SystemConfiguration.framework libz.dylib
+3. 添加必要的开源库源文件到 Xcode 工程
+4. 创建并配置 BPushConfig.plist 文件
+在工程中创建一个新的 Property List 文件,并命名为 BPushConfig.plist,添加以下键值:
+libBPush.a 引用了若干开源库。目前有:JSONKit、Base64、GzipCompressor、OpenUDID、 Reachability。
+如果您的工程已经使用了该库,可以省略这一步。
+￼￼百度开发者中心 5
+￼Push SDK 用户手册 (iOS 版)
+￼
+“API_KEY” = “pDUCHGTbD346jt2klpHRjHp7” “PRODUCTION_MODE” = NO
+“DEBUG” = NO
+“BPUSH_CHANNEL” = “91”
+API_KEY:必选。百度开发者中心为每个 app 自动分配的 api key,在开发者中心 app 基本信息 中可以查看。
+PRODUCTION_MODE:必选。应用发布模式。开发证书签名时,值设为”NO”;发布证书签名时, 值设为”YES”。请在调试和发布应用时,修改正确设置这个值,以免出现推送通知无法到达。
+DEBUG:可选。Push SDK 调试模式开关,值为 YES 时,将打开 SDK 日志。 BPUSH_CHANNEL:可选。渠道号,云推送将会进行统计,在控制台可以看到统计结果
 
- #import <UIKit/UIKit.h>
+
+
+#import <UIKit/UIKit.h>
 
 #import <Cordova/CDVViewController.h>
 
@@ -60,7 +79,7 @@ AndroidManifest.xml:
 #import "MainViewController.h"
 #import "BPush.h"
 #import <Cordova/CDVPlugin.h>
-#import "PushPlugin.h"
+#import "CDVPushPlugin.h"
 #import <objc/runtime.h>
 
 @implementation AppDelegate
