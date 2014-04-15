@@ -1,6 +1,6 @@
 #import "PushPlugin.h"
 
-@implementation PushPlugin
+@implementation CDVPushPlugin
 
 @synthesize notificationMessage;
 @synthesize isInline;
