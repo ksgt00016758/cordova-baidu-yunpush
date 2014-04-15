@@ -35,6 +35,16 @@
 		
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
                
+
+		        <receiver android:name="org.apache.cordova.baiduyunpush.MyPushMessageReceiver">
+		            <intent-filter>
+		                <!-- 接收push消息 -->
+		                <action android:name="com.baidu.android.pushservice.action.MESSAGE" />
+		                <!-- 接收bind,unbind,fetch,delete等反馈消息 -->
+		                <action android:name="com.baidu.android.pushservice.action.RECEIVE" />
+		                <action android:name="com.baidu.android.pushservice.action.notification.CLICK" />
+		            </intent-filter>
+		        </receiver>
 			    <!-- push service -->
 				<receiver android:name="com.baidu.android.pushservice.PushServiceReceiver"
 					android:process=":bdservice_v1">
@@ -69,10 +79,29 @@
         </config-file>
 
         <source-file src="src/android/PushNotification.java" target-dir="src/org/apache/cordova/baiduyunpush" />
+        <source-file src="src/android/MyPushMessageReceiver.java" target-dir="src/org/apache/cordova/baiduyunpush" />
         <source-file src="src/android/armeabi/libbdpush_V1_0.so" target-dir="libs/armeabi" />
         <source-file src="src/android/mips/libbdpush_V1_0.so" target-dir="libs/mips" />
         <source-file src="src/android/x86/libbdpush_V1_0.so" target-dir="libs/x86" />
-        <source-file src="src/android/pushservice-2.4.0.jar" target-dir="libs" />
+        <source-file src="src/android/pushservice-3.2.0.jar" target-dir="libs" />
     </platform>  
+
+     <platform name="ios">
+
+        <config-file target="config.xml" parent="/*">
+            <feature name="FGPushNotification">
+                <param name="ios-package" value="CDVPushPlugin"/>
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+
+         <header-file src="src/ios/CDVPushPlugin.h" />
+         <source-file src="src/ios/CDVPushPlugin.m" />
+ 	     <framework src="Foundation.framework" />
+ 	     <framework src="CoreTelephony.framework" />
+ 	     <framework src="SystemConfiguration.framework" />
+         <framework src="libz.dylib" />
+     </platform>
+
 
 </plugin>
