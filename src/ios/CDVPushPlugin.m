@@ -1,4 +1,4 @@
-#import "PushPlugin.h"
+#import "CDVPushPlugin.h"
 
 @implementation CDVPushPlugin
 
