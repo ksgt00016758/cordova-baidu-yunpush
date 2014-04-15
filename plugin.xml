@@ -80,6 +80,7 @@
 
         <source-file src="src/android/PushNotification.java" target-dir="src/org/apache/cordova/baiduyunpush" />
         <source-file src="src/android/MyPushMessageReceiver.java" target-dir="src/org/apache/cordova/baiduyunpush" />
+        <source-file src="src/android/Utils.java" target-dir="src/org/apache/cordova/baiduyunpush" />
         <source-file src="src/android/armeabi/libbdpush_V1_0.so" target-dir="libs/armeabi" />
         <source-file src="src/android/mips/libbdpush_V1_0.so" target-dir="libs/mips" />
         <source-file src="src/android/x86/libbdpush_V1_0.so" target-dir="libs/x86" />
