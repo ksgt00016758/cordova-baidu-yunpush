@@ -1,10 +1,10 @@
-Android:
+Android配置说明:
 
 
-Activity增加初始化调用：
+1) Activity增加初始化调用：
 FrontiaApplication.initFrontiaApplication(getBaseContext());
 
-
+```xml
 package com.funton.halfcity;
 
 import android.os.Bundle;
@@ -25,10 +25,27 @@ public class HalfCity extends CordovaActivity
         FrontiaApplication.initFrontiaApplication(getBaseContext());
     }
 }
+```
 
-AndroidManifest.xml:
-增加：android:launchMode="singleTask"
- <activity android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale" android:label="@string/app_name" android:name="HalfCity" android:theme="@android:style/Theme.Black.NoTitleBar" android:windowSoftInputMode="adjustResize" android:launchMode="singleTask">
+2) AndroidManifest.xml:
+activity增加：android:launchMode="singleTask"
+```xml
+
+<activity  ... android:launchMode="singleTask">
+
+<!-- Push service 运行需要的权限 --/>
+<uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.READ_PHONE_STATE" /> 
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> 
+<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> 
+<uses-permission android:name="android.permission.WRITE_SETTINGS" /> 
+<uses-permission android:name="android.permission.VIBRATE" />
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> 
+<uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> 
+<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+```
 
 
 
