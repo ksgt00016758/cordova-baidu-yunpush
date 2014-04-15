@@ -47,30 +47,28 @@ activity增加：android:launchMode="singleTask"
 
 ```
 
+3） 引入android_lib下面的包
 
+IOS配置说明：
 
- IOS：
-
-1. 将 libBPush.a 和 BPush.h 添加到 Xcode 工程目录
+1. 将 libs下面的包和文件加载到工程中
 2. 工程必须引用的库:
-Foundation.framework CoreTelephony.framework SystemConfiguration.framework libz.dylib
-3. 添加必要的开源库源文件到 Xcode 工程
-4. 创建并配置 BPushConfig.plist 文件
-在工程中创建一个新的 Property List 文件,并命名为 BPushConfig.plist,添加以下键值:
-libBPush.a 引用了若干开源库。目前有:JSONKit、Base64、GzipCompressor、OpenUDID、 Reachability。
-如果您的工程已经使用了该库,可以省略这一步。
-￼￼百度开发者中心 5
-￼Push SDK 用户手册 (iOS 版)
-￼
-“API_KEY” = “pDUCHGTbD346jt2klpHRjHp7” “PRODUCTION_MODE” = NO
-“DEBUG” = NO
-“BPUSH_CHANNEL” = “91”
-API_KEY:必选。百度开发者中心为每个 app 自动分配的 api key,在开发者中心 app 基本信息 中可以查看。
-PRODUCTION_MODE:必选。应用发布模式。开发证书签名时,值设为”NO”;发布证书签名时, 值设为”YES”。请在调试和发布应用时,修改正确设置这个值,以免出现推送通知无法到达。
-DEBUG:可选。Push SDK 调试模式开关,值为 YES 时,将打开 SDK 日志。 BPUSH_CHANNEL:可选。渠道号,云推送将会进行统计,在控制台可以看到统计结果
+    Foundation.framework 
+    CoreTelephony.framework 
+    SystemConfiguration.framework 
+    libz.dylib
+3. 创建并配置 BPushConfig.plist 文件
+    在工程中创建一个新的 Property List 文件,并命名为 BPushConfig.plist,添加以下键值: ￼
+    “API_KEY” = “pDUCHGTbD346jt2klpHRjHp7” “PRODUCTION_MODE” = NO
+    “DEBUG” = NO
+    “BPUSH_CHANNEL” = “91”
+    API_KEY:必选。百度开发者中心为每个 app 自动分配的 api key,在开发者中心 app 基本信息 中可以查看。
+    PRODUCTION_MODE:必选。应用发布模式。开发证书签名时,值设为”NO”;发布证书签名时, 值设为”YES”。请在调试和发布应用时,修改正确设置这个值,以免出现推送通知无法到达。
+    DEBUG:可选。Push SDK 调试模式开关,值为 YES 时,将打开 SDK 日志。 BPUSH_CHANNEL:可选。渠道号,云推送将会进行统计,在控制台可以看到统计结果
 
+4. Application文件需要引入必须的方法
 
-
+```xml
 #import <UIKit/UIKit.h>
 
 #import <Cordova/CDVViewController.h>
@@ -87,10 +85,6 @@ DEBUG:可选。Push SDK 调试模式开关,值为 YES 时,将打开 SDK 日志�
 @property (nonatomic, retain) NSDictionary	*launchNotification;
 
 @end
-
-
-
-
 
 #import "AppDelegate.h"
 #import "MainViewController.h"
@@ -258,7 +252,7 @@ DEBUG:可选。Push SDK 调试模式开关,值为 YES 时,将打开 SDK 日志�
     application.applicationIconBadgeNumber = 0;
     
     if (![self.viewController.webView isLoading] && self.launchNotification) {
-        PushPlugin *pushHandler = [self getCommandInstance:@"FGPushNotification"];
+        CDVPushPlugin *pushHandler = [self getCommandInstance:@"FGPushNotification"];
         
         pushHandler.notificationMessage = self.launchNotification;
         self.launchNotification = nil;
@@ -267,7 +261,7 @@ DEBUG:可选。Push SDK 调试模式开关,值为 YES 时,将打开 SDK 日志�
 }
 - (id) getCommandInstance:(NSString*)className
 {
-	return [self.viewController getCommandInstance:className];
+    return [self.viewController getCommandInstance:className];
 }
 // its dangerous to override a method from within a category.
 // Instead we will use method swizzling. we set this up in the load call.
@@ -282,25 +276,71 @@ DEBUG:可选。Push SDK 调试模式开关,值为 YES 时,将打开 SDK 日志�
 
 - (AppDelegate *)swizzled_init
 {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createNotificationChecker:)
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createNotificationChecker:)
                                                  name:@"UIApplicationDidFinishLaunchingNotification" object:nil];
     
-	// This actually calls the original init method over in AppDelegate. Equivilent to calling super
-	// on an overrided method, this is not recursive, although it appears that way. neat huh?
-	return [self swizzled_init];
+    // This actually calls the original init method over in AppDelegate. Equivilent to calling super
+    // on an overrided method, this is not recursive, although it appears that way. neat huh?
+    return [self swizzled_init];
 }
 
 // This code will be called immediately after application:didFinishLaunchingWithOptions:. We need
 // to process notifications in cold-start situations
 - (void)createNotificationChecker:(NSNotification *)notification
 {
-	if (notification)
-	{
-		NSDictionary *launchOptions = [notification userInfo];
-		if (launchOptions)
-			self.launchNotification = [launchOptions objectForKey: @"UIApplicationLaunchOptionsRemoteNotificationKey"];
-	}
+    if (notification)
+    {
+        NSDictionary *launchOptions = [notification userInfo];
+        if (launchOptions)
+            self.launchNotification = [launchOptions objectForKey: @"UIApplicationLaunchOptionsRemoteNotificationKey"];
+    }
 }
 
 
 @end
+
+```
+
+JS中的引用：
+
+```xml
+    onDeviceReady: function() {
+        navigator.splashscreen.hide();  
+        app.receivedEvent('deviceready');
+        if (device.platform == 'iOS' && parseFloat(window.device.version) >= 7.0) {
+            $('.container').addClass('container-ios7');
+            //platform = 'iOS';
+        }
+        if (device.platform == 'iOS'){
+            platform = 'iOS';
+        }
+        fastgoPushNotification.register({
+                                        "api_key":"ZVeSPDQtzWyGsSyyBzP242ec",
+                                        "badge":"true",
+                                        "sound":"true",
+                                        "alert":"true",
+                                        "ecb":"onNotification"
+                                        });
+        
+    }
+
+    function onNotification (event) {
+        alert('RRR');
+        INDEX_SWIPER.swipeNext();
+        if ( event.alert )
+        {
+            
+        }
+        
+        if ( event.sound )
+        {
+            
+        }
+        
+        if ( event.badge )
+        {   alert('R3');
+        }
+    }
+
+```
+
