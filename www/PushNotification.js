@@ -1,3 +1,4 @@
+var cordova = require('cordova'),
 exec = require('cordova/exec');
 
 var FGPushNotification = function() {
