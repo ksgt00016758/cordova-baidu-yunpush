@@ -125,23 +125,23 @@ public class MyPushMessageReceiver extends FrontiaPushMessageReceiver {
 		String notifyString = "通知点击 title=\"" + title + "\" description=\""
 				+ description + "\" customContent=" + customContentString;
 		Log.d(TAG, notifyString);
-		
+		String myvalue = null;
 		// 自定义内容获取方式，mykey和myvalue对应通知推送时自定义内容中设置的键和值
-		if (customContentString != null & TextUtils.isEmpty(customContentString)) {
+		if (customContentString != null & !TextUtils.isEmpty(customContentString)) {
 			JSONObject customJson = null;
 			try {
 				customJson = new JSONObject(customContentString);
-				String myvalue = null;
-				if (customJson.isNull("mykey")) {
-					myvalue = customJson.getString("mykey");
+				Log.d(TAG, customJson.getString("script"));
+				if ( !customJson.isNull("script")) {
+					myvalue = customJson.getString("script");
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		String _d = "javascript:" + "androidCallback" + "()";
-		PushNotification.executeCallback();
+
+		PushNotification.executeCallback(myvalue);
 		// Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
 		//updateContent(context, notifyString);
 	}

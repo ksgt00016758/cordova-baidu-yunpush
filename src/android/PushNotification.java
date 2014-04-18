@@ -30,7 +30,6 @@ public class PushNotification extends CordovaPlugin
 		if(action.equals("register"))
 		{
 			gWebView = this.webView;
-			//gWebView.sendJavascript(_d); 
 			this.pushCallbackContext = callbackContext;
 			super.initialize(cordova, webView);
 	        IntentFilter intentFilter = new IntentFilter();
@@ -41,17 +40,17 @@ public class PushNotification extends CordovaPlugin
             final JSONObject params = args.getJSONObject(0);
             String api_key = params.getString(API_KEY);
             String ecb = params.getString(CALL_BACK_METHOD);
-            jsString = "javascript:" + ecb + "()";
-            
-	        PushManager.startWork(cordova.getActivity().getApplicationContext(), 0, api_key);
-	        System.out.print("#########PushManager");
+            jsString = "javascript:"+ecb;
+	        PushManager.startWork(cordova.getActivity().getApplicationContext(), 0, api_key);       
 	        LOG.d("#########PushManager", "CordovaActivity.onCreate()");
             return true;
 		}
 		return false;
 	}
 	
-	public static void executeCallback(){
+	public static void executeCallback(String value){
+		jsString +="("+ value+")";
+		LOG.d("#########PushManager", jsString);
 		gWebView.sendJavascript(jsString);
 	}
 
